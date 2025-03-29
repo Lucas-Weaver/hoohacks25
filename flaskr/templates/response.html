@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .meal-plan {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            text-align: left;
+        }
+        h2 {
+            color: #343a40;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    
+    <h1>Meal Plans</h1>
+    
+    {% for plan in meal_plans %}
+        <div class="meal-plan">
+            <ul>
+                {% for meal in plan %}
+                    <li>{{ meal }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</html>

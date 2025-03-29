@@ -1,12 +1,13 @@
 import os
 from google import genai 
+
 from google.genai import types
 
 from dotenv import load_dotenv
 
-from flask import Flask
+from flask import Flask,render_template,request,jsonify
 
-from flask import render_template,request,jsonify
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -32,8 +33,10 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/',methods=['POST','GET'])
     def hello():
+
         if request.method == 'POST':
-            return request.form
+            plans = [["breakfast","lunch","dinner"],["breakfast","lunch","dinner"]]
+            return render_template('index.html',meal_plans=plans)
         
         return render_template('index.html')
     
