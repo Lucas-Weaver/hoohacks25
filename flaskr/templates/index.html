@@ -336,25 +336,44 @@
             }
             
             // Function to get AI response
-            function getAIResponse(userMessage) {
-                userMessage = userMessage.toLowerCase();
-                let response = aiResponses.default;
+            async function getAIResponse(userMessage) {
+                // Add loading message
+                const loadingId = 'loading-message-' + Date.now();
+                addMessage('<div id="' + loadingId + '">Thinking...</div>');
                 
-                // Simple keyword matching
-                if (userMessage.includes('weight loss') || userMessage.includes('lose weight')) {
-                    response = aiResponses["weight loss"];
-                } else if (userMessage.includes('muscle') || userMessage.includes('gain') || userMessage.includes('bulk')) {
-                    response = aiResponses["muscle gain"];
-                } else if (userMessage.includes('maintain') || userMessage.includes('maintenance')) {
-                    response = aiResponses["maintenance"];
-                } else if (userMessage.includes('help') || userMessage.includes('how')) {
-                    response = aiResponses["help"];
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: userMessage })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Remove loading message
+                    const loadingElement = document.getElementById(loadingId);
+                    if (loadingElement && loadingElement.parentNode) {
+                        loadingElement.parentNode.remove();
+                    }
+                    
+                    if (data.response) {
+                        addMessage(data.response);
+                    } else {
+                        addMessage("I'm having trouble understanding. Could you rephrase?");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    
+                    // Remove loading message
+                    const loadingElement = document.getElementById(loadingId);
+                    if (loadingElement && loadingElement.parentNode) {
+                        loadingElement.parentNode.remove();
+                    }
+                    
+                    addMessage("Sorry, I encountered an error while processing your request.");
                 }
-                
-                // Delay response for a more natural feel
-                setTimeout(() => {
-                    addMessage(response);
-                }, 1000);
             }
             
             // Handle send button click
