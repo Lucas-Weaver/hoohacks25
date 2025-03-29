@@ -1,5 +1,6 @@
 import os
 from google import genai 
+from google.genai import types
 
 from dotenv import load_dotenv
 
@@ -40,28 +41,67 @@ def create_app(test_config=None):
     def chat():
         load_dotenv('keys.env')
         # Get API key from environment variable
-        key = os.getenv('GEMINI_KEY')
-        print(key)
-        # Get user message from request
+        api_key = os.getenv('GEMINI_KEY')
+        
+        # Get user message and conversation history from request
         user_message = request.json.get('message', '')
+        conversation = request.json.get('conversation', [])
         
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
         
+        # Add the new user message to the conversation
+        conversation.append({"role": "user", "parts": [{"text": user_message}]})
         
-        client = genai.Client(api_key=key)
+       
+        # Prepare system prompt to guide Gemini's responses
+        system_prompt = """
+        You are a nutrition assistant helping users set up their meal planning form.
+        If the user shares their goals, age, weight, height, gender, or activity level, 
+        calculate appropriate nutritional recommendations. For any recommendations,
+        return a JSON object with the following structure in addition to your conversational response:
+        {"form_updates": {"calories": 2000, "protein": 150, "carbs": 200, "fat": 65, "fiber": 30, "sugar": 40, "sodium": 2000}}
+        Only include fields that you have recommendations for. DO NOT mention the json object, simply end your response with the raw JSON.
+        Keepy your reasoning for reccomendations under 200 words.
+        """
         
-        response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=user_message
+        # Call Gemini API with the entire conversation history
+        client = genai.Client(api_key=api_key)
+    
+        ai_response = client.models.generate_content(
+        model="gemini-2.0-flash", 
+        contents=user_message,
+        config=types.GenerateContentConfig(
+            system_instruction=system_prompt)
         )
-        
-        # Extract the AI's response
-        return jsonify({'response':response.text})
+        ai_response = ai_response.text
+        app.logger.debug(f"{ai_response}")
+        import re, json
+
+        json_match = re.search(r'({[\s\S]*"form_updates"[\s\S]*})', ai_response)
+        form_updates = ""
+        if json_match:
+            json_str = json_match.group(1)
+            updates_data = json.loads(json_str)
+            form_updates = updates_data.get('form_updates', {})
             
-        '''      
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-        '''
+            # Remove the JSON from the displayed response
+            ai_response = ai_response.replace(json_match.group(1), '')
+            ai_response = ai_response[:-8]
+        
+        
+        
+        conversation.append({"role": "assistant", "parts": [{"text": ai_response}]})
+            
+        return jsonify({
+            'response': ai_response,
+            'form_updates': form_updates,
+            'conversation': conversation
+        })
+           
+                
+        
+
     from . import db
     db.init_app(app)
     return app
