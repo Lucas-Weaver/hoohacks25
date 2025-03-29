@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planning App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .btn-primary:hover {
+            background-color: #3e8e41;
+            border-color: #3e8e41;
+        }
+        .form-check-label {
+            margin-left: 5px;
+        }
+        .allergies-section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        /* Chat window styles */
+        .chat-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 300px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        .chat-input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            background-color: white;
+        }
+        .chat-input {
+            flex: 1;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            margin-right: 10px;
+        }
+        .chat-input:focus {
+            outline: none;
+            background-color: #e6e6e6;
+        }
+        .chat-send-btn {
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message {
+            margin-bottom: 10px;
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 18px;
+            position: relative;
+            clear: both;
+        }
+        .user-message {
+            background-color: #DCF8C6;
+            float: right;
+            border-bottom-right-radius: 5px;
+        }
+        .ai-message {
+            background-color: #ECECEC;
+            float: left;
+            border-bottom-left-radius: 5px;
+        }
+        .message-time {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 3px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Meal Planning App</h1>
+            <p class="lead">Plan your meals based on your nutritional needs and preferences</p>
+        </div>
+
+        <div class="form-container">
+            <form method="POST" action="/">
+                <div class="row">
+                    <!-- Left column -->
+                    <div class="col-md-6">
+                        <h3>Nutritional Goals</h3>
+                        
+                        <!-- Calories -->
+                        <div class="mb-3">
+                            <label for="calories" class="form-label">Daily Calories</label>
+                            <input type="number" class="form-control" id="calories" name="calories" min="500" max="5000" placeholder="e.g., 2000" required>
+                        </div>
+                        
+                        <!-- Primary Macros in grams -->
+                        <div class="mb-3">
+                            <label class="form-label">Primary Macronutrients (grams per day)</label>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="protein" class="form-label">Protein (g)</label>
+                                    <input type="number" class="form-control" id="protein" name="protein" min="0" max="300" placeholder="e.g., 50">
+                                </div>
+                                <div class="col">
+                                    <label for="carbs" class="form-label">Carbs (g)</label>
+                                    <input type="number" class="form-control" id="carbs" name="carbs" min="0" max="500" placeholder="e.g., 200">
+                                </div>
+                                <div class="col">
+                                    <label for="fat" class="form-label">Fat (g)</label>
+                                    <input type="number" class="form-control" id="fat" name="fat" min="0" max="200" placeholder="e.g., 70">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Macros in grams -->
+                        <div class="mb-3">
+                            <label class="form-label">Additional Nutritional Goals</label>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="fiber" class="form-label">Fiber (g)</label>
+                                    <input type="number" class="form-control" id="fiber" name="fiber" min="0" max="100" placeholder="e.g., 25">
+                                </div>
+                                <div class="col">
+                                    <label for="sugar" class="form-label">Sugar (g)</label>
+                                    <input type="number" class="form-control" id="sugar" name="sugar" min="0" max="200" placeholder="e.g., 30">
+                                </div>
+                                <div class="col">
+                                    <label for="sodium" class="form-label">Sodium (mg)</label>
+                                    <input type="number" class="form-control" id="sodium" name="sodium" min="0" max="5000" placeholder="e.g., 2300">
+                                </div>
+                            </div>
+                            <small class="text-muted">Leave blank for any fields you don't wish to specify</small>
+                        </div>
+                        
+                        <!-- Meals per day -->
+                        <div class="mb-3">
+                            <label for="meals" class="form-label">Number of Meals per Day</label>
+                            <select class="form-select" id="meals" name="meals">
+                                <option value="3" selected>3 (Breakfast, Lunch, Dinner)</option>
+                                <option value="4">4 (Includes Afternoon Snack)</option>
+                                <option value="5">5 (Includes Morning & Afternoon Snacks)</option>
+                                <option value="6">6 (Includes 3 Snacks)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Right column -->
+                    <div class="col-md-6">
+                        <h3>Dietary Preferences</h3>
+                        
+                        <!-- Diet type -->
+                        <div class="mb-3">
+                            <label class="form-label">Diet Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="vegetarian" id="vegetarian" name="diet_type">
+                                <label class="form-check-label" for="vegetarian">Vegetarian</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="vegan" id="vegan" name="diet_type">
+                                <label class="form-check-label" for="vegan">Vegan</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="gluten_free" id="gluten_free" name="diet_type">
+                                <label class="form-check-label" for="gluten_free">Gluten Free</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Allergies and restrictions -->
+                        <div class="mb-3 allergies-section">
+                            <label class="form-label">Allergies</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="eggs" id="eggs" name="allergies">
+                                        <label class="form-check-label" for="eggs">Eggs</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="fish" id="fish" name="allergies">
+                                        <label class="form-check-label" for="fish">Fish</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="milk" id="milk" name="allergies">
+                                        <label class="form-check-label" for="milk">Milk</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="peanuts" id="peanuts" name="allergies">
+                                        <label class="form-check-label" for="peanuts">Peanuts</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="sesame" id="sesame" name="allergies">
+                                        <label class="form-check-label" for="sesame">Sesame</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="shellfish" id="shellfish" name="allergies">
+                                        <label class="form-check-label" for="shellfish">Shellfish</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="soy" id="soy" name="allergies">
+                                        <label class="form-check-label" for="soy">Soy</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="treenuts" id="treenuts" name="allergies">
+                                        <label class="form-check-label" for="treenuts">Tree Nuts</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="wheat" id="wheat" name="allergies">
+                                        <label class="form-check-label" for="wheat">Wheat</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Nutrition Assistant Chat -->
+                        <div class="mb-3">
+                            <label class="form-label">Nutrition AI Assistant</label>
+                            <p class="text-muted small mb-2">Need help determining your nutritional goals? Chat with our AI assistant.</p>
+                            <div class="chat-container">
+                                <div class="chat-messages" id="chat-messages">
+                                    <div class="message ai-message">
+                                        Hello! I'm your nutrition assistant. I can help you determine appropriate calorie and macronutrient goals based on your personal needs. What's your goal? (Weight loss, maintenance, muscle gain, etc.)
+                                        <span class="message-time">Just now</span>
+                                    </div>
+                                </div>
+                                <div class="chat-input-container">
+                                    <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
+                                    <button type="button" class="chat-send-btn" id="chat-send">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="apply-recommendations">
+                                    <i class="fas fa-magic me-1"></i> Apply AI Recommendations
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" id="clear-chat">
+                                    <i class="fas fa-trash me-1"></i> Clear Chat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit button -->
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Generate Meal Plan</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Results section (hidden initially, shown after form submission) -->
+        {% if meal_plan %}
+        <div class="form-container">
+            <h2>Your Personalized Meal Plan</h2>
+            <div class="meal-plan-results">
+                {{ meal_plan|safe }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatInput = document.getElementById('chat-input');
+            const chatSend = document.getElementById('chat-send');
+            const chatMessages = document.getElementById('chat-messages');
+            const applyRecommendations = document.getElementById('apply-recommendations');
+            const clearChat = document.getElementById('clear-chat');
+            
+            // Sample AI responses
+            const aiResponses = {
+                "weight loss": "Based on your goal of weight loss, I would recommend a moderate calorie deficit. For most people, starting with 500 calories below maintenance is effective. Would you like to share your age, gender, height, weight, and activity level for a more personalized recommendation?",
+                "muscle gain": "For muscle gain, you'll need a calorie surplus along with adequate protein. Would you like to share your current stats (age, gender, height, weight) and training routine so I can provide more specific recommendations?",
+                "maintenance": "For weight maintenance, I'll need to calculate your maintenance calories. Can you share your age, gender, height, weight, and typical activity level?",
+                "help": "I can help determine your nutritional needs based on your personal information and goals. Just let me know what you're trying to achieve (weight loss, muscle gain, health improvement, etc.) and some basic information about yourself.",
+                "default": "Thanks for your message. To provide personalized nutrition recommendations, I need some information about your goals and current status. What's your primary fitness or health goal?"
+            };
+            
+            // Demo recommendations that will be applied when clicking "Apply AI Recommendations"
+            const demoRecommendations = {
+                calories: 2000,
+                protein: 150,
+                carbs: 200,
+                fat: 65,
+                fiber: 30,
+                sugar: 40,
+                sodium: 2000
+            };
+            
+            // Function to add message to chat
+            function addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+                messageDiv.innerHTML = message + '<span class="message-time">Just now</span>';
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to get AI response
+            function getAIResponse(userMessage) {
+                userMessage = userMessage.toLowerCase();
+                let response = aiResponses.default;
+                
+                // Simple keyword matching
+                if (userMessage.includes('weight loss') || userMessage.includes('lose weight')) {
+                    response = aiResponses["weight loss"];
+                } else if (userMessage.includes('muscle') || userMessage.includes('gain') || userMessage.includes('bulk')) {
+                    response = aiResponses["muscle gain"];
+                } else if (userMessage.includes('maintain') || userMessage.includes('maintenance')) {
+                    response = aiResponses["maintenance"];
+                } else if (userMessage.includes('help') || userMessage.includes('how')) {
+                    response = aiResponses["help"];
+                }
+                
+                // Delay response for a more natural feel
+                setTimeout(() => {
+                    addMessage(response);
+                }, 1000);
+            }
+            
+            // Handle send button click
+            chatSend.addEventListener('click', function() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = '';
+                    getAIResponse(message);
+                }
+            });
+            
+            // Handle enter key press
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    chatSend.click();
+                }
+            });
+            
+            // Apply AI recommendations
+            applyRecommendations.addEventListener('click', function() {
+                document.getElementById('calories').value = demoRecommendations.calories;
+                document.getElementById('protein').value = demoRecommendations.protein;
+                document.getElementById('carbs').value = demoRecommendations.carbs;
+                document.getElementById('fat').value = demoRecommendations.fat;
+                document.getElementById('fiber').value = demoRecommendations.fiber;
+                document.getElementById('sugar').value = demoRecommendations.sugar;
+                document.getElementById('sodium').value = demoRecommendations.sodium;
+                
+                addMessage("I've applied recommended values based on our conversation: 2000 calories, 150g protein, 200g carbs, 65g fat, 30g fiber, 40g sugar, and 2000mg sodium. Feel free to adjust these values to better fit your specific needs.");
+            });
+            
+            // Clear chat
+            clearChat.addEventListener('click', function() {
+                chatMessages.innerHTML = '<div class="message ai-message">Hello! I\'m your nutrition assistant. I can help you determine appropriate calorie and macronutrient goals based on your personal needs. What\'s your goal? (Weight loss, maintenance, muscle gain, etc.)<span class="message-time">Just now</span></div>';
+            });
+        });
+    </script>
+</body>
+</html>

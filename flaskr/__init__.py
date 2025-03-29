@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-
+from flask import render_template,request
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -25,9 +25,12 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route('/',methods=['POST','GET'])
     def hello():
-        return 'Hello, World!'
+        if request.method == 'POST':
+            return request.form
+        
+        return render_template('index.html')
     
     from . import db
     db.init_app(app)

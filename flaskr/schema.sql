@@ -2,9 +2,9 @@ DROP TABLE IF EXISTS meals;
 
 CREATE TABLE meals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    meal_name TEXT UNIQUE NOT NULL,
-    meal_description TEXT UNIQUE NOT NULL,
-    
+    meal_name TEXT NOT NULL,
+    meal_description TEXT NOT NULL,
+
     calories INTEGER NOT NULL,
     protein INTEGER NOT NULL,
     sodium INTEGER NOT NULL,
