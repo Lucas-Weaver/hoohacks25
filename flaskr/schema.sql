@@ -8,7 +8,7 @@ CREATE TABLE meals (
     calories INTEGER NOT NULL,
     protein INTEGER NOT NULL,
     sodium INTEGER NOT NULL,
-    suger INTEGER NOT NULL,
+    sugar INTEGER NOT NULL,
     fat INTEGER NOT NULL,
     fiber INTEGER NOT NULL,
     carbohydrates INTEGER NOT NULL,
