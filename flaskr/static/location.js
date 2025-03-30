@@ -1,5 +1,5 @@
 let map;
-
+let pos;
 
 async function goToIndex(position) {
     window.location.href = '/?lat='+position.lat+'&long='+position.lng
@@ -8,45 +8,37 @@ async function initMap() {
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
     const map = new Map(document.getElementById("map"), {
-        center: {lat:0.0, lng:0.0},
+        center: {lat:54,lng:54},
         zoom: 14,
         mapId: "4504f8b37365c3d0",
     });
-    infoWindow.setPosition(pos);
-    infoWindow.setContent("Location found.");
-    infoWindow.open(map);
-    
-    const infoWindow = new InfoWindow();
+   
     const draggableMarker = new AdvancedMarkerElement({
         map,
-        position: pos,
+        position: {lat:54,lng:54},
         gmpDraggable: true,
         title: "This marker is draggable.",
     });
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
+
+    
+    function success(position){
+        pos = {lat:position.coords.latitude, lng:position.coords.longitude}
+        draggableMarker.position = pos;
         
-        
-        infoWindow,setCenter(pos)
-        draggableMarker.setCenter(pos)
         map.setCenter(pos);
-
-
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
-        },
-      );
+    }
+    function error(error){
+        console.log("something went wrong");
+    }
+    navigator.geolocation.getCurrentPosition(success,error)
+    console.log(pos)
+    
+    
 
     
     
-    
+
   
     draggableMarker.addListener("dragend", (event) => {
       

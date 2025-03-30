@@ -7,19 +7,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal Planning App</title>
+    <title>Meal Mentor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Meal Planning App</h1>
+            <h1>Meal Mentor</h1>
             <p class="lead">Plan your meals based on your nutritional needs and preferences</p>
         </div>
 
         <div class="form-container">
             <form method="POST" action="/">
+                <div class="mb-3">
+                    <label class="form-label">Nutrition AI Assistant</label>
+                    <p class="text-muted small mb-2">Need help determining your nutritional goals? Chat with our AI assistant.</p>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message ai-message">
+                                Hello! I'm your nutrition assistant. I can help you determine appropriate calorie and macronutrient goals based on your personal needs. What's your goal? (Weight loss, maintenance, muscle gain, etc.)
+                                <span class="message-time">Just now</span>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
+                            <button type="button" class="chat-send-btn" id="chat-send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="apply-recommendations">
+                            <i class="fas fa-magic me-1"></i> Apply AI Recommendations
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="clear-chat">
+                            <i class="fas fa-trash me-1"></i> Clear Chat
+                        </button>
+                    </div>
+                </div>
                 <div class="row">
                     <!-- Left column -->
                     <div class="col-md-6">
@@ -85,7 +111,7 @@
                         
                         <!-- allergies dropdown -->
                         <div class = "dropdown">
-                            <div class="mb-3 allergies-section">
+                            <div class="mb-2 allergies-section">
                                 <label class="form-label">Allergies</label>
                                 <div class = "dropdown-content">
                                     <div class="row">
@@ -134,11 +160,11 @@
                             </div>
                         </div>
 
-                        <div class="mb-3 allergies-section dropdown">
+                        <div class="mb-2 allergies-section dropdown">
                             <label class="form-label">Dietary Restrictions</label>
                             
                             <!-- Diet type -->
-                            <div class="mb-3 dropdown-content">
+                            <div class="mb-2 dropdown-content">
                                 <label class="form-label">Diet Type</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="vegetarian" id="vegetarian" name="diet_type">
@@ -154,10 +180,16 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mb-2 allergies-section ">
+                            <button>
+                            <a style="text-decoration: none; color: grey" href = '/api/location'>
+                                Choose Location
+                            </a> 
+                            </button>
+                        </div>
                         {% if position %}
-                            {% for i in position %}
-                                <h1>{{i}}</h1>
-                            {% endfor %}
+                            <p>Current Location: {{position[0]}}, {{position[1]}}</p>
                         {% endif %}
                         <!-- Results section (hidden initially, shown after form submission) -->
                         {% if meal_plans %}
@@ -168,8 +200,12 @@
                                     <div class="meal-plan fade-in-up">
                                         <h4 class="mb-3">Plan Option {{ loop.index }}</h4>
                                         <ul class="list-group">
-                                            {% for meal in plan %}
-                                                <li class="list-group-item stagger-item">{{ meal }}</li>
+                                            {% for meals in plan %}
+                                            <li class="list-group-item stagger-item">
+                                                <li>Name: {{meals[2]}}</li>
+                                                <li>Location: {{meals[0]}}</li>
+                                                <li>Description: {{meals[1]}}</li>
+                                            </li>
                                             {% endfor %}
                                         </ul>
                                     </div>
@@ -190,32 +226,7 @@
                         
                         
                         <!-- AI Nutrition Assistant Chat -->
-                        <div class="mb-3">
-                            <label class="form-label">Nutrition AI Assistant</label>
-                            <p class="text-muted small mb-2">Need help determining your nutritional goals? Chat with our AI assistant.</p>
-                            <div class="chat-container">
-                                <div class="chat-messages" id="chat-messages">
-                                    <div class="message ai-message">
-                                        Hello! I'm your nutrition assistant. I can help you determine appropriate calorie and macronutrient goals based on your personal needs. What's your goal? (Weight loss, maintenance, muscle gain, etc.)
-                                        <span class="message-time">Just now</span>
-                                    </div>
-                                </div>
-                                <div class="chat-input-container">
-                                    <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
-                                    <button type="button" class="chat-send-btn" id="chat-send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" id="apply-recommendations">
-                                    <i class="fas fa-magic me-1"></i> Apply AI Recommendations
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" id="clear-chat">
-                                    <i class="fas fa-trash me-1"></i> Clear Chat
-                                </button>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                 </div>

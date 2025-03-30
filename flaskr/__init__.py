@@ -2,6 +2,7 @@ import os
 from google import genai 
 
 from google.genai import types
+import backend_util
 
 from dotenv import load_dotenv
 
@@ -35,8 +36,19 @@ def create_app(test_config=None):
     def hello():
         
         if request.method == 'POST':
-            plans = [["breakfast","lunch","dinner"],["breakfast","lunch","dinner"]]
-            return render_template('index.html',meal_plans=plans)
+            
+            constraints = [0 for i in range(7)]
+            nutrients = ['calories','protein','sodium','sugar','fat','fiber','carbs']
+            
+            for i in range(len(nutrients)):
+                if request.form[nutrients[i]] != '':
+                    constraints[i] = int(request.form[nutrients[i]])
+                
+            plans = backend_util.find_best_meal_combinations(3,constraints,'none')
+            plans = [i[0] for i in plans]
+
+           
+            return render_template('index.html',meal_plans=plans[0:3])
         if 'lat' in request.args:
             lat = request.args.get('lat')
             long = request.args.get('long')
