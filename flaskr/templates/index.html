@@ -2,8 +2,8 @@
 
 
 <html lang="en">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<script src="{{url_for('static', filename='javascript.js')}}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<script src="{{url_for('static', filename='index.js')}}"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -154,7 +154,11 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% if position %}
+                            {% for i in position %}
+                                <h1>{{i}}</h1>
+                            {% endfor %}
+                        {% endif %}
                         <!-- Results section (hidden initially, shown after form submission) -->
                         {% if meal_plans %}
                         <div class="form-container results-container" id="results-section">

@@ -231,34 +231,35 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return info;
     }
-});
 
-// Add this to your existing script, within the DOMContentLoaded event listener
 
-// Animation for results section
-function animateResults() {
-    const resultSection = document.getElementById('results-section');
-    if (resultSection) {
-        // Animate list items with staggered delay
-        const listItems = resultSection.querySelectorAll('.stagger-item');
-        listItems.forEach((item, index) => {
-            item.style.animationDelay = `${0.1 + (index * 0.1)}s`;
-        });
-        
-        // Scroll to results section
-        setTimeout(() => {
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        }, 300);
+    // Add this to your existing script, within the DOMContentLoaded event listener
+
+    // Animation for results section
+    function animateResults() {
+        const resultSection = document.getElementById('results-section');
+        if (resultSection) {
+            // Animate list items with staggered delay
+            const listItems = resultSection.querySelectorAll('.stagger-item');
+            listItems.forEach((item, index) => {
+                item.style.animationDelay = `${0.1 + (index * 0.1)}s`;
+            });
+            
+            // Scroll to results section
+            setTimeout(() => {
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
     }
-}
 
-// Call this function when the page loads if results are present
-animateResults();
+    // Call this function when the page loads if results are present
+    animateResults();
 
-// Add event listener to the form submission
-document.querySelector('form').addEventListener('submit', function() {
-    // Add loading indicator
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Generating...';
-    submitBtn.disabled = true;
+    // Add event listener to the form submission
+    document.querySelector('form').addEventListener('submit', function() {
+        // Add loading indicator
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Generating...';
+        submitBtn.disabled = true;
+    });
 });

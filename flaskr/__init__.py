@@ -33,13 +33,20 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/',methods=['POST','GET'])
     def hello():
-
+        
         if request.method == 'POST':
             plans = [["breakfast","lunch","dinner"],["breakfast","lunch","dinner"]]
             return render_template('index.html',meal_plans=plans)
+        if 'lat' in request.args:
+            lat = request.args.get('lat')
+            long = request.args.get('long')
+            return render_template('index.html',position = (long,lat))
+
         
         return render_template('index.html')
-    
+    @app.route('/api/location',methods=['POST','GET'])
+    def locations():
+        return render_template('location.html')
     @app.route('/api/chat', methods=['POST'])
     def chat():
         load_dotenv('keys.env')
