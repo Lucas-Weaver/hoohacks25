@@ -1,0 +1,166 @@
+body {
+    background-color: #f8f9fa;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.form-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+.btn-primary:hover {
+    background-color: #3e8e41;
+    border-color: #3e8e41;
+}
+.form-check-label {
+    margin-left: 5px;
+}
+.allergies-section {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+/* Chat window styles */
+.chat-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 500px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+.chat-input-container {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background-color: white;
+}
+.chat-input {
+    flex: 1;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    margin-right: 10px;
+}
+.chat-input:focus {
+    outline: none;
+    background-color: #e6e6e6;
+}
+.chat-send-btn {
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.message {
+    margin-bottom: 10px;
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 18px;
+    position: relative;
+    clear: both;
+}
+.user-message {
+    background-color: #DCF8C6;
+    float: right;
+    border-bottom-right-radius: 5px;
+}
+.ai-message {
+    background-color: #ECECEC;
+    float: left;
+    border-bottom-left-radius: 5px;
+}
+.message-time {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 3px;
+    display: block;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 500px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Animation styles */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.results-container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.stagger-item {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Scrolling animation for results */
+.scroll-into-view {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Pulse animation for button */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.animate-pulse {
+    animation: pulse 0.5s ease-in-out 3;
+}
