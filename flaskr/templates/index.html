@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         
-                        <!-- allergies dropdown -->
+                        <!-- allergies dropdown 
                         <div class = "dropdown">
                             <div class="mb-2 allergies-section">
                                 <label class="form-label">Allergies</label>
@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                         </div>
-
+                    -->
                         <div class="mb-2 allergies-section dropdown">
                             <label class="form-label">Dietary Restrictions</label>
                             
@@ -183,37 +183,16 @@
 
                         <div class="mb-2 allergies-section ">
                             <button>
-                            <a style="text-decoration: none; color: grey" href = '/api/location'>
+                            <a style="text-decoration: none; color: grey" target = '_blank' onclick="document.getElementById('something').style.display='inherit';return true" href = '/api/location'>
                                 Choose Location
                             </a> 
                             </button>
                         </div>
-                        {% if position %}
-                            <p>Current Location: {{position[0]}}, {{position[1]}}</p>
-                        {% endif %}
-                        <!-- Results section (hidden initially, shown after form submission) -->
-                        {% if meal_plans %}
-                        <div class="form-container results-container" id="results-section">
-                            <h2 class="text-center mb-4">Your Personalized Meal Plans</h2>
-                            <div class="meal-plan-results">
-                                {% for plan in meal_plans %}
-                                    <div class="meal-plan fade-in-up">
-                                        <h4 class="mb-3">Plan Option {{ loop.index }}</h4>
-                                        <ul class="list-group">
-                                            {% for meals in plan %}
-                                            <li class="list-group-item stagger-item">
-                                                <li>Name: {{meals[2]}}</li>
-                                                <li>Location: {{meals[0]}}</li>
-                                                <li>Description: {{meals[1]}}</li>
-                                            </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    {% if not loop.last %}<hr class="my-4">{% endif %}
-                                {% endfor %}
-                            </div>
+                        <div id="something" style="display:none">
+                            <p>Current Location: 38.034605, -78.515870</p>
                         </div>
-                        {% endif %}
+                        <!-- Results section (hidden initially, shown after form submission) -->
+                        
 
                     </div>
                    
@@ -230,13 +209,37 @@
                     </div>
                     
                 </div>
-                
+                {% if meal_plans %}
+                <div class="form-container results-container" id="results-section">
+                    <h2 class="text-center mb-4">Your Personalized Meal Plans</h2>
+                    <div class="meal-plan-results">
+                        {% for plan in meal_plans %}
+                            <div class="meal-plan fade-in-up">
+                                <h4 class="mb-3">Plan Option {{ loop.index }}</h4>
+                                <ul class="list-group">
+                                    {% for meals in plan %}
+                                    <li class="list-group-item stagger-item">
+                                        <li>Name: {{meals[2]}}</li>
+                                        <li>Location: {{meals[0]}}</li>
+                                        <li>Description: {{meals[1]}}</li>
+                                        <li>Calories: {{meals[3]}}</li>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <strong>Total Calories: {{ totals[loop.index-1][0][0] }} Protein: {{totals[loop.index-1][0][1]}}g Carbs: {{totals[loop.index-1][0][6]}}g Fat: {{totals[loop.index-1][0][4]}}g</strong>
+                            </div>
+                            {% if not loop.last %}<hr class="my-4">{% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+                {% endif %}
                 <!-- Submit button -->
                 <div class="d-grid gap-2 mt-4">
                     <button type="submit" class="btn btn-primary btn-lg">Generate Meal Plan</button>
                 </div>
             </form>
-        
+            
         
         
         </div>

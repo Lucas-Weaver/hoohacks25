@@ -45,10 +45,11 @@ def create_app(test_config=None):
                     constraints[i] = int(request.form[nutrients[i]])
                 
             plans = backend_util.find_best_meal_combinations(3,constraints,'none')
+            totals = [i[1:] for i in plans]
             plans = [i[0] for i in plans]
+            
 
-           
-            return render_template('index.html',meal_plans=plans[0:3])
+            return render_template('index.html',meal_plans=plans[0:3], totals = totals)
         if 'lat' in request.args:
             lat = request.args.get('lat')
             long = request.args.get('long')
